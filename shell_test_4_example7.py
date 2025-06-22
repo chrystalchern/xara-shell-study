@@ -1,36 +1,13 @@
-# OpenSees -- Open System for Earthquake Engineering Simulation
-#         Pacific Earthquake Engineering Research Center
 
-#
-# 3D Shell Structure
-# ------------------
-#  Shell roof modeled with three dimensional linear shell elements
-
-# Example Objectives
-# ------------------
-#  test linear-elastic shell element
-#  free vibration analysis starting from static deflection
-#
-# Units: kips, in, sec
-#
-# Written: Andreas Schellenberg (andreas.schellenberg@gmail.com)
-# Date: September 2017
-
-# import the OpenSees Python module
-import opensees.openseespy as ops
+import xara
 import numpy as np
 import math
 import csv
 import os
 
-
-    ############################
-    # Start of model generation#
-    ############################
-
 def create_model(walk_edge=False):
     # create ModelBuilder (with three-dimensions and 6 DOF/node)
-    model = ops.Model(ndm=3, ndf=6)
+    model = xara.Model(ndm=3, ndf=6)
 
     E = 3.0e3
 
@@ -92,11 +69,7 @@ def create_model(walk_edge=False):
                             1: [ 0.0 , 0.0, 0.0],  
                             2: [-33.282, 0.0, 49.923],  
                             3: [ 0.0 , 0.0, 72.111],   
-                            4: [33.282 , 0.0, 22.077],  
-                            # 1: [ 0.0 , 0.0, 0.0],  
-                            # 2: [-20.0, 0.0, 0.0],  
-                            # 3: [ 20.0 , 0.0, 40.0],   
-                            # 4: [0.0 , 0.0, 40.0],   
+                            4: [33.282 , 0.0, 22.077],
                             })
 
 
@@ -225,43 +198,6 @@ def static_analysis(model):
     # Perform the gravity load analysis
     return model.analyze(1)
     #return model.nodeDisp(5)
-
-
-
-# def dynamic_analysis(model,mid):
-#     # ----------------------------
-#     # Start of recorder generation
-#     # ----------------------------
-
-#     model.recorder("Node", "-file", "Node.out", "-time", "-node", mid, "-dof", 2, "disp")
-
-
-#     # ------------------------------------------
-#     # Configure and Perform the dynamic analysis
-#     # ------------------------------------------
-
-#     # Remove the static analysis & reset the time to 0.0
-#     model.wipeAnalysis()
-#     model.setTime(0.0)
-
-#     # Now remove the loads and let the beam vibrate
-#     model.remove("loadPattern", 1)
-
-#     # Create the transient analysis
-#     model.test("EnergyIncr", 1.0e-10, 20, 0)
-#     model.algorithm("Newton")
-#     model.numberer("RCM")
-#     model.constraints("Plain")
-#     model.system("SparseGeneral", "-piv")
-#     model.integrator("Newmark", 0.50, 0.25)
-#     model.analysis("Transient")
-
-#     # record once at time 0
-#     model.record()
-
-#     # Perform the transient analysis (20 sec)
-#     return model.analyze(100, 0.2)
-#     # model.analyze(250, 0.50)
 
 
 if __name__ == "__main__":
